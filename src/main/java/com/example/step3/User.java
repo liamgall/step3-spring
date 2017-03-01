@@ -4,12 +4,8 @@ import javax.validation.constraints.Size;
  
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
- 
-/**
- *
- * @author www.codejava.net
- *
- */
+import org.springframework.web.multipart.MultipartFile;
+
 public class User {
     @NotEmpty
     @Email
@@ -38,6 +34,7 @@ public class User {
 	@NotEmpty
 	private String captcha;
 	
+	private MultipartFile uploadFile;
 	
 	public String getEmail() {
 		return email;
@@ -102,5 +99,14 @@ public class User {
 	public void setCaptcha(String captcha) {
 		this.captcha = captcha;
 	}
+
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+
  
 }

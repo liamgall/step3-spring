@@ -1,5 +1,7 @@
 package com.example.step3;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.minidev.json.JSONObject;
@@ -37,33 +40,33 @@ public class UserController {
 		model.put("userForm", user);
 		return mav;
 	}
+
 	@RequestMapping(value = "/InfoValidation", method = RequestMethod.POST)
 	public String doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
-			Map<String, Object> model, @RequestParam("captcha") String captcha) throws ParseException {
+			Map<String, Object> model, @RequestParam("captcha") String captcha,
+			@RequestParam("uploadFile") MultipartFile file) throws ParseException, IllegalStateException, IOException {
 		
-
+		File saveFile = new File("C:/images/"+file.getOriginalFilename());
+		file.transferTo(saveFile);
+		
 		RestTemplate template = new RestTemplate();
-		System.out.println(captcha);
 		final String url = "https://www.google.com/recaptcha/api/siteverify";
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
 		parameters.add("secret", "6Ld2LBcUAAAAAA9MavSDWm0J_WsyLrSfArwg3zcz");
 		parameters.add("response", captcha);
 		ResponseEntity<String> response = template.postForEntity(url, parameters, String.class);
-		
+
 		JSONParser parser = new JSONParser();
-		JSONObject jsonObj = (JSONObject)parser.parse(response.getBody());
-		
-		
-		System.out.println(jsonObj.get("success").toString());
-		
-		if(jsonObj.get("success").toString().equals("false")){
+		JSONObject jsonObj = (JSONObject) parser.parse(response.getBody());
+
+		if (jsonObj.get("success").toString().equals("false")) {
 			return "JoinForm";
-		}else{
+		} else {
 			if (result.hasErrors()) {
 				return "JoinForm";
 			}
 			return "JoinSuccess";
 		}
-		
+
 	}
 }

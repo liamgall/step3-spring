@@ -18,7 +18,8 @@
 <body>
 	<div align="center">
 		<table border="0" width="80%">
-			<form:form id="form" action="/InfoValidation" commandName="userForm">
+			<form:form id="form" action="/InfoValidation" commandName="userForm"
+				enctype="multipart/form-data" method="post">
 				<tr>
 					<td align="left" width="20%">Email:</td>
 					<!--  
@@ -74,9 +75,18 @@
 					<form:hidden path="captcha" id="captcha" />
 				</tr>
 				<tr>
-					<td></td>
+				<td></td>
+					<td>
+						<div class="g-recaptcha"
+							data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td><form:input type="file" path="uploadFile" /></td>
+				</tr>
+				<tr>
 					<td align="center"><input type="submit" id="submit" value="제출" /></td>
-					<td></td>
 				</tr>
 			</form:form>
 
@@ -84,10 +94,6 @@
 
 			</tr>
 		</table>
-		<div class="g-recaptcha"
-			data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
-		<button id="click">으아</button>
-	</div>
 </body>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -147,7 +153,7 @@
 	});
 
 	function checkValidate() {
-
+		return true;
 		/* 비밀번호 같은지 검사 */
 		if ($('#password').val() !== $('#password2').val()) {
 			alert('비밀번호가 틀립니다.');
@@ -185,7 +191,7 @@
 			return false;
 		}
 		/* 정상 */
-		else{
+		else {
 			return true;
 		}
 	}
