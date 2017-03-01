@@ -16,7 +16,7 @@ public class User {
     private String email;
 
 	@NotEmpty
-	@Size(min=11, max=12)
+	@Size(min=13, max=14)
 	private String phoneNumber;
 	
 	@NotEmpty
@@ -34,7 +34,11 @@ public class User {
 	
 	@NotEmpty
 	private String extra_info;
-
+	
+	@NotEmpty
+	private String captcha;
+	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -89,6 +93,14 @@ public class User {
 
 	public void setExtra_info(String extra_info) {
 		this.extra_info = extra_info;
+	}
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
 	}
  
 }
