@@ -71,7 +71,7 @@
 				<tr>
 					<td>비밀번호 확인 :</td>
 					<td><input type="password" id="password2" /></td>
-					<form:hidden path="captcha" id="captcha"/>
+					<form:hidden path="captcha" id="captcha" />
 				</tr>
 				<tr>
 					<td></td>
@@ -84,7 +84,8 @@
 
 			</tr>
 		</table>
-		<div class="g-recaptcha" data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
+		<div class="g-recaptcha"
+			data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
 		<button id="click">으아</button>
 	</div>
 </body>
@@ -107,10 +108,10 @@
 	});
 
 	/* --------------------- */
-	
-	$('#click').click(function(){
+
+	$('#click').click(function() {
 	});
-	
+
 	/* ---------------------- */
 
 	$password.keyup(function() {
@@ -146,7 +147,7 @@
 	});
 
 	function checkValidate() {
-		
+
 		/* 비밀번호 같은지 검사 */
 		if ($('#password').val() !== $('#password2').val()) {
 			alert('비밀번호가 틀립니다.');
@@ -178,19 +179,19 @@
 			alert('비밀번호 입력 오류. 숫자, 특수문자를 1개 이상 포함해야 합니다. (8자 이상)');
 			return false;
 		}
-		
-		else if(grecaptcha.getResponse() == ""){
+		/* 캡차 검사 */
+		else if (grecaptcha.getResponse() == "") {
 			alert('캡차 완료 안됨.');
 			return false;
 		}
 		/* 정상 */
-		else {
+		else{
 			return true;
 		}
 	}
 	$('#form').submit(function() {
 		$('#captcha').val(grecaptcha.getResponse());
-		
+
 		if (!checkValidate())
 			return false;
 	});
