@@ -32,6 +32,7 @@ public class UserController {
 	public String doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
 			Map<String, Object> model, @RequestParam("captcha") String captcha) {
 		System.out.println(captcha);
+		
 		if (result.hasErrors()) {
 			return "JoinForm";
 		}
