@@ -1,5 +1,9 @@
 package com.example.step3;
 
+import java.security.Key;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -13,18 +17,49 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class EmailController {
-	
+	private String eMail;
+	private final byte[] keyValue = "abcdefghijklmnop".getBytes();
     @RequestMapping(value = "/eMailValidation", method = RequestMethod.POST)
     @ResponseBody
-    public String eMailValidation(@RequestBody String body, HttpServletRequest request) {
+    public String eMailValidation(@RequestBody String body, HttpServletRequest request) throws Exception {
     	String response = request.getRequestURL().substring(0,request.getRequestURL().indexOf(request.getRequestURI()));
-    	return response;
+
+    	try{
+    		Key key = new SecretKeySpec(keyValue, "AES");
+    		Cipher c = Cipher.getInstance("AES");
+    		c.init(Cipher.ENCRYPT_MODE, key);
+    		byte[] encVal = c.doFinal(body.getBytes());
+    		eMail = body;
+    		String encryptedValue = new org.apache.commons.codec.binary.Base64().encodeAsString(encVal);
+    		
+        	return response+"/validation/"+encryptedValue;
+    	} catch(Exception e){
+    		throw e;
+    	}
+
     }
-	@RequestMapping(value="/validation/{param}", method=RequestMethod.GET)
-	public ModelAndView validAccept(@PathVariable String param, HttpServletRequest request){
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("eMailValidationSuccess");
-		mav.addObject("eMail", param);
-		return mav;
+	@RequestMapping(value="/validation/{param:.+}", method=RequestMethod.GET)
+	public ModelAndView validAccept(@PathVariable String param, HttpServletRequest request) throws Exception{
+		try{
+
+			Key key = new SecretKeySpec(keyValue, "AES");
+			Cipher c = Cipher.getInstance("AES");
+			c.init(Cipher.DECRYPT_MODE, key);
+			byte[] decordedvalue = new org.apache.commons.codec.binary.Base64().decodeBase64(param);
+			byte[] decValue = c.doFinal(decordedvalue);
+			
+			String decryptedValue = new String(decValue);
+			if(decryptedValue.equals(eMail)){
+				ModelAndView mav = new ModelAndView();
+				mav.setViewName("eMailValidationSuccess");
+				mav.addObject("eMail", decryptedValue);
+				return mav;
+			}else{
+				return null;
+			}
+			
+		}catch(Exception e){
+			throw e;
+		}
 	}
 }

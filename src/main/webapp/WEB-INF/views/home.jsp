@@ -14,7 +14,7 @@
 
 	<br>
 	<br>
-	<a href="" id="urlLink" target="_blank"></a>
+	<a href="" id="urlLink"></a>
 
 </body>
 
@@ -26,11 +26,8 @@
 			type : "post",
 			data : $('#eMail').val(),
 			success : function(response) {
-				console.log(response);
-				//$('#urlLink').attr('href','http://localhost:8080/validation/' + response);
-				//$('#urlLink').text('http://localhost:8080/validation/' + response);
-				$('#urlLink').attr('href', response + '/validation/' + $('#eMail').val());
-				$('#urlLink').text(response + '/validation/' + $('#eMail').val());
+				$('#urlLink').attr('href', response);
+				$('#urlLink').text(response);
 			}
 		})
 	});

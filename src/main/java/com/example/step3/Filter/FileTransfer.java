@@ -1,4 +1,4 @@
-package com.example.step3.model;
+package com.example.step3.Filter;
 
 import java.io.File;
 import java.io.IOException;
