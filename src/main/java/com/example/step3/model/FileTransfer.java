@@ -15,7 +15,7 @@ public class FileTransfer {
 	
 	
 	public void uploadFile() throws IllegalStateException, IOException{
-		saveFile = new File("C:/images/" + file.getOriginalFilename());
+		saveFile = new File("C:/attatchments/" + file.getOriginalFilename());
 		file.transferTo(saveFile);
 	}
 }

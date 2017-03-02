@@ -21,13 +21,8 @@
 			<form:form id="form" action="/InfoValidation" commandName="userForm"
 				enctype="multipart/form-data" method="post">
 				<tr>
-					<td align="left" width="20%">Email:</td>
-					<!--  
-					<td align="left" width="40%"><form:input path="email"
-							value="${eMail}" size="30" readonly="true"
-							style="background-color:#EBEBE4;" /></td>
-					-->
-					<td align="left" width="40%"><form:input path="email"
+					<td align="left" width="10%">Email:</td>
+					<td align="left" width="20%"><form:input path="email"
 							value="${eMail}" size="30" style="background-color:#EBEBE4;" /></td>
 					<td align="left"><form:errors path="email" cssClass="error" /></td>
 				</tr>
@@ -47,7 +42,7 @@
 					<td><form:errors path="address" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>상세주소 :</td>
+					<td><label for="details">상세주소 :</label></td>
 					<td><form:input type="text" id="details" path="details"
 							name="" class="postcodify_details" value="" style="width:300px" /></td>
 					<td><form:errors path="details" cssClass="error" /></td>
@@ -60,29 +55,29 @@
 					<td><form:errors path="extra_info" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>전화번호 :</td>
+					<td><label for="phoneNumber">전화번호 :</label></td>
 					<td><form:input path="phoneNumber" id="phoneNumber" /></td>
 					<td><form:errors path="phoneNumber" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>비밀번호 :</td>
+					<td><label for="password">비밀번호 :</label></td>
 					<td><form:password path="password" id="password" /></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
-					<td>비밀번호 확인 :</td>
+					<td><label for="password2">비밀번호 확인 :</label></td>
 					<td><input type="password" id="password2" /></td>
 					<form:hidden path="captcha" id="captcha" />
 				</tr>
 				<tr>
-				<td></td>
+					<td>Captcha :</td>
 					<td>
 						<div class="g-recaptcha"
-							data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
-						</div>
+							data-sitekey="6LcUZxcUAAAAAB485q4NbzXKfSZx-AacZmEsZdpK"></div>
 					</td>
 				</tr>
 				<tr>
+					<td>이미지 첨부 :</td>
 					<td><form:input type="file" path="uploadFile" /></td>
 				</tr>
 				<tr>
@@ -94,10 +89,11 @@
 
 			</tr>
 		</table>
+	</div>
 </body>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
 <script>

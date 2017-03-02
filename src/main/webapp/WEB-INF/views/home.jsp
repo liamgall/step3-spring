@@ -18,20 +18,21 @@
 
 </body>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-	$('#submit').click(
-			function() {
-				$.ajax({
-					url : "/eMailValidation",
-					type : "post",
-					data : $('#eMail').val(),
-					success : function(response) {
-						console.log(response);
-						$('#urlLink').attr('href','http://localhost:8080/validation/' + response);
-						$('#urlLink').text('http://localhost:8080/validation/' + response);
-					}
-				})
-			});
+	$('#submit').click(function() {
+		$.ajax({
+			url : "/eMailValidation",
+			type : "post",
+			data : $('#eMail').val(),
+			success : function(response) {
+				console.log(response);
+				//$('#urlLink').attr('href','http://localhost:8080/validation/' + response);
+				//$('#urlLink').text('http://localhost:8080/validation/' + response);
+				$('#urlLink').attr('href', response + '/validation/' + $('#eMail').val());
+				$('#urlLink').text(response + '/validation/' + $('#eMail').val());
+			}
+		})
+	});
 </script>
 </html>

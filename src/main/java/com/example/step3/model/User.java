@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class User {
     @NotEmpty
-    @Email
     private String email;
 
 	@NotEmpty
