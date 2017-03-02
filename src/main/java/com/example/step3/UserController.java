@@ -23,6 +23,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.step3.model.CaptchaChecker;
+import com.example.step3.model.FileTransfer;
+import com.example.step3.model.User;
+
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
@@ -46,25 +50,19 @@ public class UserController {
 			Map<String, Object> model, @RequestParam("captcha") String captcha,
 			@RequestParam("uploadFile") MultipartFile file) throws ParseException, IllegalStateException, IOException {
 		
-		File saveFile = new File("C:/images/"+file.getOriginalFilename());
-		file.transferTo(saveFile);
+		/* 캡차 확인 */
+		CaptchaChecker cc = new CaptchaChecker(captcha);
+		FileTransfer ft = new FileTransfer(file);
 		
-		RestTemplate template = new RestTemplate();
-		final String url = "https://www.google.com/recaptcha/api/siteverify";
-		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
-		parameters.add("secret", "6Ld2LBcUAAAAAA9MavSDWm0J_WsyLrSfArwg3zcz");
-		parameters.add("response", captcha);
-		ResponseEntity<String> response = template.postForEntity(url, parameters, String.class);
-
-		JSONParser parser = new JSONParser();
-		JSONObject jsonObj = (JSONObject) parser.parse(response.getBody());
-
-		if (jsonObj.get("success").toString().equals("false")) {
+		if (cc.getResult().get("success").toString().equals("false")) {
 			return "JoinForm";
 		} else {
+			/* 회원가입 정보들이 양식에 맞지 않은 경우 */
 			if (result.hasErrors()) {
 				return "JoinForm";
 			}
+			/* 파일 업로드 */
+			ft.uploadFile();
 			return "JoinSuccess";
 		}
 

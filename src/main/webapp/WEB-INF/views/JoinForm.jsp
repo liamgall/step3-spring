@@ -99,10 +99,11 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
+
 <script>
 	var regexEMail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/; // 이메일 검사식
 	var regexPhoneNumber = /^\d{3}-\d{3,4}-\d{4}$/; // 전화번호 검사식
-	var regexPassword = /(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9 ])[A-Za-z0-9!@#$%^&*()]{8,16}/;
+	var regexPassword = /(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()])[A-Za-z0-9!@#$%^&*()]{8,16}/;
 	var $phoneNumber = $('#phoneNumber');
 	var $password = $('#password');
 	var $password2 = $('#password2');
@@ -135,6 +136,7 @@
 	$password2.keyup(function() {
 		var textTip = $(this).next('strong');
 		if ($password.val().length === $password2.val().length) {
+			console.log("same");
 			if ($password.val() !== $password2.val())
 				textTip.text('비밀번호가 틀립니다.');
 			else
@@ -153,7 +155,6 @@
 	});
 
 	function checkValidate() {
-		return true;
 		/* 비밀번호 같은지 검사 */
 		if ($('#password').val() !== $('#password2').val()) {
 			alert('비밀번호가 틀립니다.');

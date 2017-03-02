@@ -15,6 +15,7 @@ public class EmailController {
     @RequestMapping(value = "/eMailValidation", method = RequestMethod.POST)
     @ResponseBody
     public String eMailValidation(@RequestBody String body) {
+    	System.out.println(body);
     	return body;
     }
 	@RequestMapping(value="/validation/{param}", method=RequestMethod.GET)

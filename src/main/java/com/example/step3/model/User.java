@@ -1,4 +1,4 @@
-package com.example.step3;
+package com.example.step3.model;
  
 import javax.validation.constraints.Size;
  
