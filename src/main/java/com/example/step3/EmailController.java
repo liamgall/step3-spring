@@ -17,7 +17,6 @@ public class EmailController {
     public String eMailValidation(@RequestBody String body) {
     	return body;
     }
-
 	@RequestMapping(value="/validation/{param}", method=RequestMethod.GET)
 	public ModelAndView validAccept(@PathVariable String param){
 		System.out.println(param);
