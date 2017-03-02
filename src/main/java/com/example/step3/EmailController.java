@@ -6,6 +6,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +46,8 @@ public class EmailController {
 			Key key = new SecretKeySpec(keyValue, "AES");
 			Cipher c = Cipher.getInstance("AES");
 			c.init(Cipher.DECRYPT_MODE, key);
-			byte[] decordedvalue = new org.apache.commons.codec.binary.Base64().decodeBase64(param);
+			new org.apache.commons.codec.binary.Base64();
+			byte[] decordedvalue = Base64.decodeBase64(param);
 			byte[] decValue = c.doFinal(decordedvalue);
 			
 			String decryptedValue = new String(decValue);
