@@ -151,6 +151,7 @@
 	});
 
 	function checkValidate() {
+		return true;
 		/* 비밀번호 같은지 검사 */
 		if ($('#password').val() !== $('#password2').val()) {
 			alert('비밀번호가 틀립니다.');

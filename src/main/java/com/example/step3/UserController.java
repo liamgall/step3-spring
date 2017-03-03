@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -36,25 +37,29 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/InfoValidation", method = RequestMethod.POST)
-	public String doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
+	public ModelAndView doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
 			Map<String, Object> model, @RequestParam("captcha") String captcha,
-			@RequestParam("uploadFile") MultipartFile file) throws ParseException, IllegalStateException, IOException {
+			@RequestParam("uploadFile") MultipartFile file, HttpServletRequest request) throws ParseException, IllegalStateException, IOException {
 		
 		/* 캡차 확인 */
+		ModelAndView mav = new ModelAndView();
 		CaptchaChecker cc = new CaptchaChecker(captcha);
-		FileTransfer ft = new FileTransfer(file);
-		
+		FileTransfer ft = new FileTransfer(file, request.getSession().getServletContext().getRealPath("/"));
 		if (cc.getResult().get("success").toString().equals("false")) {
-			return "JoinForm";
+			mav.setViewName("JoinForm");
 		} else {
 			/* 회원가입 정보들이 양식에 맞지 않은 경우 */
 			if (result.hasErrors()) {
-				return "JoinForm";
+				mav.setViewName("JoinForm");
 			}
-			/* 파일 업로드 */
-			ft.uploadFile();
-			return "JoinSuccess";
+			else{
+				/* 양식에 맞게 작성한 경우 파일 업로드 */
+				ft.uploadFile();
+				mav.addObject("fileName", file.getOriginalFilename());
+				mav.setViewName("JoinSuccess");
+			}
 		}
+		return mav;
 
 	}
 }

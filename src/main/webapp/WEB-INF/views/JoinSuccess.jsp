@@ -36,6 +36,10 @@
 				<td>전화번호 :</td>
 				<td>${userForm.phoneNumber}</td>
 			</tr>
+			<tr>
+				<td>첨부이미지 :</td>
+				<td><img src="/resources/attatchments/${fileName}" width="200px" height="200px"/></td>
+			</tr>
 
 		</table>
 	</div>
