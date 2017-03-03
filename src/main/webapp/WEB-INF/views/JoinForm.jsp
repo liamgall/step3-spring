@@ -21,10 +21,11 @@
 			<form:form id="form" action="/InfoValidation" commandName="userForm"
 				enctype="multipart/form-data" method="post">
 				<tr>
-					<td align="left" width="10%">Email:</td>
+					<td align="left" width="20%">Email:</td>
 					<td align="left" width="20%"><form:input path="email"
-							value="${eMail}" size="30" style="background-color:#EBEBE4;" readonly="true"/></td>
-					<td align="left"><form:errors path="email" cssClass="error"/></td>
+							value="${eMail}" size="30" style="background-color:#EBEBE4;"
+							readonly="true" /></td>
+					<td align="left"><form:errors path="email" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>우편 번호 :</td>

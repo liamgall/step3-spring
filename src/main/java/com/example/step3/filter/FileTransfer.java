@@ -1,4 +1,4 @@
-package com.example.step3.Filter;
+package com.example.step3.filter;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +16,7 @@ public class FileTransfer {
 	
 	
 	public void uploadFile() throws IllegalStateException, IOException{
-//		saveFile = new File("C:/attatchments/" + file.getOriginalFilename());
-		saveFile = new File(rootPath+"resources/attatchments/"+file.getOriginalFilename());
+		saveFile = new File(rootPath+"/"+file.getOriginalFilename());
 		
 		file.transferTo(saveFile);
 	}

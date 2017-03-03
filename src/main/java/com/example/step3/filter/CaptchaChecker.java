@@ -1,4 +1,4 @@
-package com.example.step3.Filter;
+package com.example.step3.filter;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;

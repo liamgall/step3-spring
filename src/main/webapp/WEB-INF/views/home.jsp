@@ -26,8 +26,12 @@
 			type : "post",
 			data : $('#eMail').val(),
 			success : function(response) {
-				$('#urlLink').attr('href', response);
-				$('#urlLink').text(response);
+				if(response!="error"){
+					$('#urlLink').attr('href', response);
+					$('#urlLink').text(response);
+				}else{
+					alert('이메일이 존재합니다.');
+				}
 			}
 		})
 	});

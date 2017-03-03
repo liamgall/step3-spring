@@ -26,7 +26,7 @@
 			objs = document.createElement('input');
 			objs.setAttribute('type', 'hidden');
 			objs.setAttribute('name', 'eMail');
-			objs.setAttribute('value', '${eMail}');
+			objs.setAttribute('value', '${eMail}'.substring(0, '${eMail}'.length-1));
 			form.appendChild(objs);
 			form.setAttribute('method', 'post');
 			form.setAttribute('action', "/join");
