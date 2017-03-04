@@ -22,7 +22,7 @@ public class ValidationDAO {
 	}
 
 	public String insertEmail(DataSource ds, String eMail, String encVal) throws SQLException {
-		String query = "insert into emailvalid (email, hashcode, checked) values (?,?,?)";
+		String query = "insert into emailvalid values (?,?,?)";
 		Connection con = null;
 		PreparedStatement stmt = null;
 		try {
