@@ -4,6 +4,9 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +23,7 @@ public class EmailController {
 
 	@Inject
 	private DataSource ds;
+	
 	
 	/* 이메일 검증 단계 */
 	@RequestMapping(value = "/eMailValidation", method = RequestMethod.POST)

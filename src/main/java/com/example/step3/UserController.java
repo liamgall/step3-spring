@@ -53,6 +53,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		CaptchaChecker cc = new CaptchaChecker(captcha);
 		String path = request.getSession().getServletContext().getRealPath("resources/attatchments");
+		
 		FileTransfer ft = new FileTransfer(file, path);
 		
 		if (cc.getResult().get("success").toString().equals("false")) {
