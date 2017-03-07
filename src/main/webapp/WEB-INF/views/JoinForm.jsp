@@ -74,10 +74,11 @@
 					<td>Captcha :</td>
 					<td>
 						<div class="g-recaptcha"
-							data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
-							<!-- 
-						<div class="g-recaptcha"
 							data-sitekey="6LcUZxcUAAAAAB485q4NbzXKfSZx-AacZmEsZdpK"></div>
+							<!-- 
+						
+							<div class="g-recaptcha"
+							data-sitekey="6Ld2LBcUAAAAAGV1ybzPQw86lrmZGIMyYVyX5l7Q"></div>
 							 -->
 					</td>
 				</tr>

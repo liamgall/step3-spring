@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import javax.validation.Valid;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.step3.DAO.UserDAO;
 import com.example.step3.filter.CaptchaChecker;
 import com.example.step3.filter.FileTransfer;
 import com.example.step3.model.User;
@@ -33,12 +36,19 @@ public class UserController {
 
 	@Inject
 	private DataSource ds;
+
+	@Autowired
+	private SqlSession sqlSession;
 	
+	
+	/* 회원가입 작성 페이지로 보냄 */
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public ModelAndView viewLogin(Map<String, Object> model, @RequestParam("eMail") String eMail)
 			throws UnsupportedEncodingException {
 		ModelAndView mav = new ModelAndView();
+		System.out.println("aaaa    " + eMail);
 		mav.setViewName("JoinForm");
+		/* 이메일주소를 보낼 때 마침표(.)가 사라지는 것을 방지하기 위해 */
 		mav.addObject("eMail", java.net.URLDecoder.decode(eMail, "UTF-8"));
 		User user = new User();
 		model.put("userForm", user);
@@ -54,8 +64,11 @@ public class UserController {
 		CaptchaChecker cc = new CaptchaChecker(captcha);
 		String path = request.getSession().getServletContext().getRealPath("resources/attatchments");
 		FileTransfer ft = new FileTransfer(file, path);
+		UserDAO dao = sqlSession.getMapper(UserDAO.class);
+		
 		
 		if (cc.getResult().get("success").toString().equals("false")) {
+			mav.addObject("noCaptcha", "Captcha 에러!!");
 			mav.setViewName("JoinForm");
 		} else {
 			/* 회원가입 정보들이 양식에 맞지 않은 경우 */
@@ -63,11 +76,11 @@ public class UserController {
 				mav.setViewName("JoinForm");
 			}
 			else{
+				dao.insertDAO(userForm);
 				/* 양식에 맞게 작성한 경우 파일 업로드 */
 				ft.uploadFile();
 				mav.addObject("fileName", file.getOriginalFilename());
 				mav.setViewName("JoinSuccess");
-				rd.insertDB(ds, userForm, file.getOriginalFilename());
 			}
 		}
 		return mav;

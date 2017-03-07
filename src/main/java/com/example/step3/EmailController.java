@@ -1,9 +1,9 @@
 package com.example.step3;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,27 +12,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import database.ValidationDAO;
+import com.example.step3.DAO.EmailDAO;
+import com.example.step3.model.Email;
 
 @Controller
 public class EmailController {
-	private ValidationDAO vd = new ValidationDAO();
-
-	@Inject
-	private DataSource ds;
+	@Autowired
+	private SqlSession sqlSession;
+	
+	
 	
 	/* 이메일 검증 단계 */
 	@RequestMapping(value = "/eMailValidation", method = RequestMethod.POST)
 	@ResponseBody
 	public String eMailValidation(@RequestBody String body, HttpServletRequest request) throws Exception {
-		String response = request.getRequestURL().substring(0,
-				request.getRequestURL().indexOf(request.getRequestURI()));
-
-		String eMail = body;
-		System.out.println(eMail.hashCode());
-		if (vd.insertEmail(ds, eMail, Integer.toString(eMail.hashCode())).equals("success")) {
-			return response + "/validation/" + Integer.toString(eMail.hashCode());
-		} else {
+		
+		/* url을 얻기 위함 */
+		StringBuffer url = request.getRequestURL();
+		String uri = request.getRequestURI();
+		String response = url.substring(0, url.indexOf(uri));
+		
+		/* dao interface에 mapper 연동 */
+		EmailDAO dao = sqlSession.getMapper(EmailDAO.class);
+		try{
+			Email email = new Email(body, body.hashCode());
+			dao.insertDAO(email);
+			return response + "/validation/" + Integer.toString(body.hashCode());
+		}catch(Exception e){
+			e.printStackTrace();
 			return "error";
 		}
 
@@ -40,12 +47,23 @@ public class EmailController {
 
 	/* URL과 이메일 일치 여부 검사 */
 	@RequestMapping(value = "/validation/{param:.+}", method = RequestMethod.GET)
-	public ModelAndView validAccept(@PathVariable String param, HttpServletRequest request) throws Exception {
-		
-		String eMail = vd.checkEmail(ds, param);
+	public ModelAndView validAccept(@PathVariable int param, HttpServletRequest request) throws Exception {
+
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("eMailValidationSuccess");
-		mav.addObject("eMail", eMail);
-		return mav;
+		
+		/* dao interface에 mapper 연동 */
+		EmailDAO dao = sqlSession.getMapper(EmailDAO.class);
+		String email = dao.findDAO(param);
+		
+		/* 데이터베이스에 hashcode가 존재하지 않는 경우 */
+		if(email != null){
+			
+			mav.setViewName("eMailValidationSuccess");
+			mav.addObject("eMail",  email);
+			return mav;
+		}else{
+			mav.setViewName("eMailValidationFail");
+			return mav;
+		}
 	}
 }

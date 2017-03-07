@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybbatis-3-mapper.dtd">
+
+<mapper namespace="com.example.step3.DAO.EmailDAO">
+
+	<insert id="insertDAO" parameterType="Email">
+		INSERT INTO
+			emailvalid(email, hashcode)
+		VALUES
+			("${email}", "${hashcode}")
+	</insert>
+
+	<select id="findDAO" parameterType="Integer" resultType="String">
+		SELECT
+			email
+		FROM
+			emailvalid
+		WHERE
+			hashcode = #{hashcode}
+	</select>
+
+	<delete id="deleteDAO" parameterType="String">
+		DELETE FROM
+			emailvalid
+		WHERE
+			hashcode = #{hashcode}
+	</delete>
+</mapper>
