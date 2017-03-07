@@ -32,41 +32,34 @@ import net.minidev.json.parser.ParseException;
 @Controller
 public class UserController {
 
-	private RegisterDAO rd = new RegisterDAO();
-
-	@Inject
-	private DataSource ds;
-
 	@Autowired
 	private SqlSession sqlSession;
-	
-	
+
 	/* 회원가입 작성 페이지로 보냄 */
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public ModelAndView viewLogin(Map<String, Object> model, @RequestParam("eMail") String eMail)
 			throws UnsupportedEncodingException {
+		User user = new User();
 		ModelAndView mav = new ModelAndView();
-		System.out.println("aaaa    " + eMail);
 		mav.setViewName("JoinForm");
 		/* 이메일주소를 보낼 때 마침표(.)가 사라지는 것을 방지하기 위해 */
 		mav.addObject("eMail", java.net.URLDecoder.decode(eMail, "UTF-8"));
-		User user = new User();
 		model.put("userForm", user);
 		return mav;
 	}
 
 	@RequestMapping(value = "/InfoValidation", method = RequestMethod.POST)
 	public ModelAndView doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
-			Map<String, Object> model, @RequestParam("captcha") String captcha,
-			@RequestParam("uploadFile") MultipartFile file, HttpServletRequest request) throws ParseException, IllegalStateException, IOException, SQLException {
-		
+			@RequestParam("captcha") String captcha, @RequestParam("uploadFile") MultipartFile file,
+			HttpServletRequest request) throws IllegalStateException, IOException, ParseException {
+
 		ModelAndView mav = new ModelAndView();
 		CaptchaChecker cc = new CaptchaChecker(captcha);
+
 		String path = request.getSession().getServletContext().getRealPath("resources/attatchments");
 		FileTransfer ft = new FileTransfer(file, path);
 		UserDAO dao = sqlSession.getMapper(UserDAO.class);
-		
-		
+
 		if (cc.getResult().get("success").toString().equals("false")) {
 			mav.addObject("noCaptcha", "Captcha 에러!!");
 			mav.setViewName("JoinForm");
@@ -74,8 +67,8 @@ public class UserController {
 			/* 회원가입 정보들이 양식에 맞지 않은 경우 */
 			if (result.hasErrors()) {
 				mav.setViewName("JoinForm");
-			}
-			else{
+			} else {
+				/* DB에 회원정보 INSERT */
 				dao.insertDAO(userForm);
 				/* 양식에 맞게 작성한 경우 파일 업로드 */
 				ft.uploadFile();
