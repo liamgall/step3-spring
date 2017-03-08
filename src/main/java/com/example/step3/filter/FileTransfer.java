@@ -14,7 +14,6 @@ public class FileTransfer {
 		this.rootPath = rootPath;
 	}
 	
-	
 	public void uploadFile() throws IllegalStateException, IOException{
 		saveFile = new File(rootPath+"/"+file.getOriginalFilename());
 		

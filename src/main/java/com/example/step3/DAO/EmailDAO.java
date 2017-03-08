@@ -1,7 +1,5 @@
 package com.example.step3.DAO;
 
-import org.apache.ibatis.type.Alias;
-
 import com.example.step3.model.Email;
 
 public interface EmailDAO {

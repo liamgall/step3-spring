@@ -31,8 +31,10 @@ public class User {
 	
 	@NotEmpty
 	private String captcha;
-	
+
 	private MultipartFile uploadFile;
+	
+	private String filePath;
 	
 	public String getEmail() {
 		return email;
@@ -104,6 +106,14 @@ public class User {
 
 	public void setUploadFile(MultipartFile uploadFile) {
 		this.uploadFile = uploadFile;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
  

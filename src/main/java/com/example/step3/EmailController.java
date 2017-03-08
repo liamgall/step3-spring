@@ -17,9 +17,9 @@ import com.example.step3.model.Email;
 
 @Controller
 public class EmailController {
+	
 	@Autowired
 	private SqlSession sqlSession;
-	
 	
 	
 	/* 이메일 검증 단계 */
@@ -34,6 +34,9 @@ public class EmailController {
 		
 		/* dao interface에 mapper 연동 */
 		EmailDAO dao = sqlSession.getMapper(EmailDAO.class);
+		
+		
+		/* DB에 이메일 정보 등록 */
 		try{
 			Email email = new Email(body, body.hashCode());
 			dao.insertDAO(email);
@@ -53,14 +56,16 @@ public class EmailController {
 		
 		/* dao interface에 mapper 연동 */
 		EmailDAO dao = sqlSession.getMapper(EmailDAO.class);
+		
+		/* hashcode가 DB에 있는지 검사 */
 		String email = dao.findDAO(param);
 		
-		/* 데이터베이스에 hashcode가 존재하지 않는 경우 */
+		/* DB에 hashcode가 존재하는 경우 */
 		if(email != null){
-			
 			mav.setViewName("eMailValidationSuccess");
 			mav.addObject("eMail",  email);
 			return mav;
+		/* 존재하지 않는 경우 */
 		}else{
 			mav.setViewName("eMailValidationFail");
 			return mav;

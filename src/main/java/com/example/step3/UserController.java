@@ -2,12 +2,9 @@ package com.example.step3;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import javax.validation.Valid;
 
 import org.apache.ibatis.session.SqlSession;
@@ -26,7 +23,6 @@ import com.example.step3.filter.CaptchaChecker;
 import com.example.step3.filter.FileTransfer;
 import com.example.step3.model.User;
 
-import database.RegisterDAO;
 import net.minidev.json.parser.ParseException;
 
 @Controller
@@ -42,12 +38,14 @@ public class UserController {
 		User user = new User();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("JoinForm");
-		/* 이메일주소를 보낼 때 마침표(.)가 사라지는 것을 방지하기 위해 */
+		
+		/* 이메일주소를 보낼 때 마침표(.)가 사라지는 것을 방지하기 위해 인코딩 후 디코딩 */
 		mav.addObject("eMail", java.net.URLDecoder.decode(eMail, "UTF-8"));
 		model.put("userForm", user);
 		return mav;
 	}
-
+	
+	/* 회원가입 양식이 유효한지 체크 후 DB에 등록함 */
 	@RequestMapping(value = "/InfoValidation", method = RequestMethod.POST)
 	public ModelAndView doLogin(@Valid @ModelAttribute("userForm") User userForm, BindingResult result,
 			@RequestParam("captcha") String captcha, @RequestParam("uploadFile") MultipartFile file,
@@ -55,11 +53,13 @@ public class UserController {
 
 		ModelAndView mav = new ModelAndView();
 		CaptchaChecker cc = new CaptchaChecker(captcha);
-
 		String path = request.getSession().getServletContext().getRealPath("resources/attatchments");
+		userForm.setFilePath("resources/attatchments"+file.getOriginalFilename());
 		FileTransfer ft = new FileTransfer(file, path);
 		UserDAO dao = sqlSession.getMapper(UserDAO.class);
-
+		
+		
+		/* captcha 에러 */
 		if (cc.getResult().get("success").toString().equals("false")) {
 			mav.addObject("noCaptcha", "Captcha 에러!!");
 			mav.setViewName("JoinForm");
