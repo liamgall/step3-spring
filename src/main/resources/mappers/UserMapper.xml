@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO
 			user(email, postcode5, address, details, extra_info, phonenumber, password, file)
 		VALUES
-			("${email}", "${postcode5}", "${address}", "${details}", "${extra_info}", "${phoneNumber}", "${password}", "${filePath}")
+			(#{email}, #{postcode5}, #{address}, #{details}, #{extra_info}, #{phoneNumber}, #{password}, #{filePath})
 	</insert>
 
 </mapper>

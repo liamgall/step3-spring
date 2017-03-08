@@ -8,7 +8,6 @@
 </head>
 <body>
 	<h1>회원 가입</h1>
-
 	<input type="eMail" id="eMail" />
 	<button id="submit" value="회원가입">이메일 인증받기</button>
 
